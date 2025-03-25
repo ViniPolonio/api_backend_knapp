@@ -1,17 +1,16 @@
-# Projeto Laravel com PHP 8
-
-Este projeto é um exemplo de aplicação Laravel desenvolvido com PHP 8.
+# Projeto API com Laravel 9
+API desenvolvida para a empresa KNAPP Sudamérica, destinada ao portal "MAIS Cloud User Management Portal". Esse portal permite que os usuários realizem seu cadastro, passando por um processo de aprovação conduzido por um responsável de gestão. Após a aprovação, os usuários terão acesso aos recursos específicos de acordo com os perfis definidos no sistema. O objetivo é proporcionar uma gestão eficiente de usuários e seus respectivos níveis de permissão, garantindo segurança e controle no acesso aos recursos disponíveis.
 
 ## 📁 Estrutura do Projeto
-- Laravel 10
+- Laravel 9
 - PHP 8
 - Composer
-- Banco de Dados (MySQL, PostgreSQL, etc.)
+- Banco de Dados (MySQL)
 
 ## 🛠️ Pré-requisitos
 - PHP >= 8.1
 - Composer instalado
-- MySQL ou outro banco de dados compatível
+- MySQL
 
 ## 📥 Instalação
 
@@ -53,7 +52,7 @@ DB_PASSWORD=sua_senha
 php artisan key:generate
 ```
 
-5. **Migre o banco de dados:**
+5. **Rodar as migrations:**
 
 ```bash
 php artisan migrate
@@ -83,4 +82,4 @@ O projeto estará disponível em:
 
 ## 📄 Licença
 Este projeto está sob a licença da equipe 3 da turma de Engenharia de Software, 7º período.
-
+Developer: Vinicius Polonio.
