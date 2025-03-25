@@ -75,11 +75,6 @@ O projeto estará disponível em:
 - `database/` - Migrações e seeds do banco de dados
 - `resources/` - Views e assets
 
-## 🔧 Principais comandos do Artisan
-- `php artisan make:model NomeDoModel` — Criação de um Model
-- `php artisan make:controller NomeDoController` — Criação de um Controller
-- `php artisan make:migration create_nome_da_tabela` — Criação de uma Migration
-
 ## 📄 Licença
 Este projeto está sob a licença da equipe 3 da turma de Engenharia de Software, 7º período.
 Developer: Vinicius Polonio.
