@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('phone_number', 15);
             $table->boolean('is_admin')->default(0);
 
-            // Chaves estrangeiras
             $table->foreignId('company_id')->constrained('companies')->onDelete('cascade');
             $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
 

@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('uf', 2);
             $table->string('endereco_detail', 255);
             $table->tinyInteger('status')->default(1)->comment('1 = ativo | 0 = inativo');
-            $table->tinyInteger('status')->default(1)->comment('1 = ativo | 0 = inativo');
             $table->timestamps();
             $table->softDeletes();
         });
