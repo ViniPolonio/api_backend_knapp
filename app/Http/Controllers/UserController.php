@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    //consultas serão realizadas na model
+    //inserção em banco, alteração de dado, softdelete etc será feito na controller!
+    //não é necessário criar uma controller para cada model, porém deve-se seguir a boa prática
+    //querys na model, e função de inserção, envio de dado tudo na controller.
+    //manter as funções de consulta por primeiro na controller, sempre que for alguma de exclusão, edição, criação, jogar pra baixo das funçoões get.    
     public function index () 
     {
         try {
