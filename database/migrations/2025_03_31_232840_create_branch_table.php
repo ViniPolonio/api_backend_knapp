@@ -13,25 +13,21 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('branches', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('company_id');
             $table->string('name');
-            $table->string('cpf', 12)->unique(); 
+            $table->string('cnpj', 14)->unique();
             $table->string('phone_number', 15);
-            $table->boolean('is_admin')->default(0);
-
-            $table->foreignId('company_id')->constrained('companies')->onDelete('cascade');
-            $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
-
+            $table->string('email')->unique();
             $table->string('uf', 2);
             $table->string('endereco_detail', 255);
-            $table->string('email')->unique();
-            $table->tinyInteger('status')->default(0);
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->tinyInteger('status')->default(1); // 1 = ativo, 0 = inativo
             $table->timestamps();
             $table->softDeletes();
+
+            // Definição da FK
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
         });
     }
 
@@ -42,6 +38,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('branches');
     }
 };

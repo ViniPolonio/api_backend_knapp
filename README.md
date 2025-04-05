@@ -2,13 +2,13 @@
 API desenvolvida para a empresa KNAPP Sudamérica, destinada ao portal "MAIS Cloud User Management Portal". Esse portal permite que os usuários realizem seu cadastro, passando por um processo de aprovação conduzido por um responsável de gestão. Após a aprovação, os usuários terão acesso aos recursos específicos de acordo com os perfis definidos no sistema. O objetivo é proporcionar uma gestão eficiente de usuários e seus respectivos níveis de permissão, garantindo segurança e controle no acesso aos recursos disponíveis.
 
 ## 📁 Estrutura do Projeto
-- Laravel 9
-- PHP 8
+- Laravel 11
+- PHP 8.3
 - Composer
-- Banco de Dados (MySQL)
+- Banco de Dados (MySQL) -> Conexão com Oracle também 
 
 ## 🛠️ Pré-requisitos
-- PHP >= 8.1
+- PHP >= 8.3
 - Composer instalado
 - MySQL
 
