@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\User\UserCreateRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    //consultas serão realizadas na model
-    //inserção em banco, alteração de dado, softdelete etc será feito na controller!
-    //não é necessário criar uma controller para cada model, porém deve-se seguir a boa prática
-    //querys na model, e função de inserção, envio de dado tudo na controller.
-    //manter as funções de consulta por primeiro na controller, sempre que for alguma de exclusão, edição, criação, jogar pra baixo das funçoões get.    
     public function index () 
     {
         try {
@@ -25,10 +22,22 @@ class UserController extends Controller
         }
     }
 
-    public function show($id) 
+    public function show($idUser) 
     {
         try {
-            return User::consultDetailUser($id);
+            return User::consultDetailUser($idUser);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error in operation',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function store(UserCreateRequest $request) 
+    {
+        try {
+            return User::createUser($request);
 
         } catch (\Exception $e) {
             return response()->json([
@@ -38,25 +47,11 @@ class UserController extends Controller
         }
     }
 
-    public function store() 
-    {
-        try {
-            //Criar formRequest -> Validate
-            return User::createUser();
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Error in operation',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    public function update () 
+    public function update (UserUpdateRequest $request, $idUser) 
     {   
         try {
             //Criar formRequest -> Validate
-            return User::updateUser();
+            return User::updateUser($idUser, $request);
 
         } catch (\Exception $e) {
             return response()->json([
@@ -65,7 +60,6 @@ class UserController extends Controller
             ], 500);
         }
     }
-
 
     public function activeUser ($idUser) 
     {
@@ -93,12 +87,10 @@ class UserController extends Controller
         }
     }
 
-    //Essa função será responsável por deletar usuário. 
-    //Função que vai inativar usuário de tal branch ou company será feito dentro da controller da mesma 
-    public function destroy($uuid) 
+    public function destroy($idUser) 
     {
         try {
-            return User::deleteUser($uuid);
+            return User::deleteUser($idUser);
 
         } catch (\Exception $e) {
             return response()->json([
