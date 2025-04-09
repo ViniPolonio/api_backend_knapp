@@ -13,7 +13,10 @@ class UserController extends Controller
     {
         try {
             $users = User::consultAllUsers();
-            return ResponseHelper::success($users);
+            if ($users->isEmpty()) {
+                return ResponseHelper::error('Nenhum registro encontrado.', null, 404);
+            }
+            return ResponseHelper::success($users, 'Usuários recuperados com sucesso.');
         } catch (\Exception $e) {
             return ResponseHelper::error('Erro ao listar usuários.', $e->getMessage());
         }
@@ -23,7 +26,7 @@ class UserController extends Controller
     {
         try {
             $user = User::consultDetailUser($idUser);
-            return ResponseHelper::success($user);
+            return ResponseHelper::success($user, 'Usuário recuperado com sucesso.');
         } catch (\Exception $e) {
             return ResponseHelper::error('Erro ao consultar usuário.', $e->getMessage());
         }
@@ -52,7 +55,8 @@ class UserController extends Controller
     public function activeUser($idUser)
     {
         try {
-            return User::activeUser($idUser);
+            $result = User::activeUser($idUser);
+            return ResponseHelper::success($result['user'], $result['message']);
         } catch (\Exception $e) {
             return ResponseHelper::error('Erro ao ativar usuário.', $e->getMessage());
         }
@@ -61,7 +65,8 @@ class UserController extends Controller
     public function inactiveUser($idUser)
     {
         try {
-            return User::inactiveUser($idUser);
+            $result = User::inactiveUser($idUser);
+            return ResponseHelper::success($result['user'], $result['message']);
         } catch (\Exception $e) {
             return ResponseHelper::error('Erro ao inativar usuário.', $e->getMessage());
         }
@@ -70,7 +75,8 @@ class UserController extends Controller
     public function destroy($idUser)
     {
         try {
-            return User::deleteUser($idUser);
+            $result = User::deleteUser($idUser);
+            return ResponseHelper::success($result['user'], $result['message']);
         } catch (\Exception $e) {
             return ResponseHelper::error('Erro ao deletar usuário.', $e->getMessage());
         }
