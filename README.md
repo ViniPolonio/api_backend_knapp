@@ -76,5 +76,5 @@ O projeto estará disponível em:
 - `resources/` - Views e assets
 
 ## 📄 Licença
-Este projeto está sob a licença da equipe 3 da turma de Engenharia de Software, 7º período.
+Este projeto está sob a licença da equipe 11 da turma de Engenharia de Software, 7º período.
 Developer: Vinicius Polonio.
