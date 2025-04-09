@@ -2,104 +2,90 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Http\Request;
+use App\Helpers\ResponseHelper;
+use App\Http\Requests\User\UserCreateRequest;
+use App\Http\Requests\UserUpdateRequest;
+use App\Services\UserService;
 
 class UserController extends Controller
 {
-    public function index () 
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
+    public function index()
     {
         try {
-            return User::consultAllUsers();
-
-        }  catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Error in operation',
-                'error' => $e->getMessage()
-            ], 500);
+            $users = $this->userService->getAllUsers();
+            if ($users->isEmpty()) {
+                return ResponseHelper::error('Nenhum registro encontrado.', null, 404);
+            }
+            return ResponseHelper::success($users, 'Usuários recuperados com sucesso.');
+        } catch (\Exception $e) {
+            return ResponseHelper::error('Erro ao listar usuários.', $e->getMessage());
         }
     }
 
-    public function show($id) 
+    public function show($idUser)
     {
         try {
-            return User::consultDetailUser($id);
-
+            $user = $this->userService->getUserDetail($idUser);
+            return ResponseHelper::success($user, 'Usuário recuperado com sucesso.');
         } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Error in operation',
-                'error' => $e->getMessage()
-            ], 500);
+            return ResponseHelper::error('Erro ao consultar usuário.', $e->getMessage());
         }
     }
 
-    public function store() 
+    public function store(UserCreateRequest $request)
     {
         try {
-            //Criar formRequest -> Validate
-            return User::createUser();
-
+            $user = $this->userService->createUser($request->validated());
+            return ResponseHelper::success($user, 'Usuário criado com sucesso.', 201);
         } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Error in operation',
-                'error' => $e->getMessage()
-            ], 500);
+            return ResponseHelper::error('Erro ao criar usuário.', $e->getMessage());
         }
     }
 
-    public function update () 
-    {   
+    public function update(UserUpdateRequest $request, $idUser)
+    {
         try {
-            //Criar formRequest -> Validate
-            return User::updateUser();
-
+            $user = $this->userService->updateUser($idUser, $request->validated());
+            return ResponseHelper::success($user, 'Usuário atualizado com sucesso.');
         } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Error in operation',
-                'error' => $e->getMessage()
-            ], 500);
+            return ResponseHelper::error('Erro ao atualizar usuário.', $e->getMessage());
         }
     }
 
-
-    public function activeUser ($idUser) 
+    public function activeUser($idUser)
     {
         try {
-            return User::activeUser($idUser);
-
+            $result = $this->userService->activateUser($idUser);
+            return ResponseHelper::success($result['user'], $result['message']);
         } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Error in operation',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-    
-    public function inactiveUser ($idUser) 
-    {
-        try {
-            return User::inactiveUser($idUser);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Error in operation',
-                'error' => $e->getMessage()
-            ], 500);
+            return ResponseHelper::error('Erro ao ativar usuário.', $e->getMessage());
         }
     }
 
-    //Essa função será responsável por deletar usuário. 
-    //Função que vai inativar usuário de tal branch ou company será feito dentro da controller da mesma 
-    public function destroy($uuid) 
+    public function inactiveUser($idUser)
     {
         try {
-            return User::deleteUser($uuid);
-
+            $result = $this->userService->deactivateUser($idUser);
+            return ResponseHelper::success($result['user'], $result['message']);
         } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Error in operation',
-                'error' => $e->getMessage()
-            ], 500);
+            return ResponseHelper::error('Erro ao inativar usuário.', $e->getMessage());
+        }
+    }
+
+    public function destroy($idUser)
+    {
+        try {
+            $result = $this->userService->deleteUser($idUser);
+            return ResponseHelper::success($result['user'], $result['message']);
+        } catch (\Exception $e) {
+            return ResponseHelper::error('Erro ao deletar usuário.', $e->getMessage());
         }
     }
 }

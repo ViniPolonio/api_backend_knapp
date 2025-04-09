@@ -13,8 +13,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
-    Route::apiResource('user', \App\Http\Controllers\UserController::class);
-    Route::apiResource('branch', \App\Http\Controllers\BranchController::class);
-    Route::apiResource('company', \App\Http\Controllers\CompanyController::class);
+Route::prefix('knapp')->middleware('auth:sanctum')->group(function () {
+
+    Route::prefix('v1')->group(function () {
+        // RESOURCE
+        Route::apiResource('user', \App\Http\Controllers\UserController::class);
+        Route::apiResource('branch', \App\Http\Controllers\BranchController::class);
+        Route::apiResource('company', \App\Http\Controllers\CompanyController::class);
+
+        // GET
+        Route::get('user/{idUser}/activate', [\App\Http\Controllers\UserController::class, 'activeUser']);
+        Route::get('user/{idUser}/deactivate', [\App\Http\Controllers\UserController::class, 'inactiveUser']);
+
+        //POST
+        
+        //PUT
+        
+        //DELETE
+    });
 });
