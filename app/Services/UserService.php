@@ -179,9 +179,18 @@ class UserService
         });
     }
 
+    /**
+     * Retorna os usuários pelo STATUS
+     * 0 - PENDENTE APROVAÇÃO
+     * 1 - APROVADO COM VINCULO
+     * 2 - APROVADO SEM VINCULO
+     * 3 - REPROVADO
+     * 4 - INACTIVE -> DELETADO
+     * @param int $status
+     */
+
     public function getUsers(int $status)
     { 
-       // 0 - PENDENTE APROVAÇÃO | 1 - APROVADO COM VINCULO | 2 - APROVADO SEM VINCULO | 3 - REPROVADO | 4 - INACTIVE = DELETED_AT
         return User::whereNull('deleted_at')->where('status', $status)->get();
     }
 }
