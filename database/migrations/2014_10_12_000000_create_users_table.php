@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('uf', 2);
             $table->string('endereco_detail', 255);
             $table->string('email')->unique();
-            $table->integer('status')->default(0);
+            $table->integer('status')->default(0)->comment('0 - Não aprovado | 1 - Aprovado com vinculo | 2 - Aprovado SEM vinculo | 3 - REPROVADO | 4 - INACTIVE = DELETED_AT ');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('remember_token', 100)->nullable();
