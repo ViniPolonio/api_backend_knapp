@@ -88,4 +88,18 @@ class UserController extends Controller
             return ResponseHelper::error('Erro ao deletar usuário.', $e->getMessage());
         }
     }
+
+    public function getUsers(int $status) 
+    {
+        try {
+            // 0 - PENDENTE APROVAÇÃO | 1 - APROVADO COM VINCULO | 2 - APROVADO SEM VINCULO | 3 - REPROVADO | 4 - INACTIVE = DELETED_AT
+            $consultUsers = $this->userService->getUsers($status );
+            if ($consultUsers->isEmpty()) {
+                return ResponseHelper::error('Nenhum registro encontrado.', null, 404);
+            }
+            return ResponseHelper::success($consultUsers, 'Novos usuários recuperados com sucesso.');
+        } catch (\Exception $e) {
+            return ResponseHelper::error('Error ao consultar todos os novos usuários.', $e->getMessage());
+        }
+    }
 }
