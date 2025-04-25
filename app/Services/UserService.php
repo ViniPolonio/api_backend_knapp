@@ -150,6 +150,7 @@ class UserService
 
     /**
      * Deleta (soft delete) o usuário.
+     * Update status 4
      *
      * @param int $id
      * @return array
