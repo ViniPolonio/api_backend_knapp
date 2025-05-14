@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Exception;
+use function PHPUnit\Framework\isEmpty;
 
 class UserService
 {
@@ -149,6 +150,7 @@ class UserService
 
     /**
      * Deleta (soft delete) o usuário.
+     * Update status 4
      *
      * @param int $id
      * @return array
@@ -158,14 +160,37 @@ class UserService
     {
         return DB::transaction(function () use ($id) {
             $user = User::findOrFail($id);
+
             if ($user->trashed()) {
                 throw new Exception('Usuário já foi deletado anteriormente.', 400);
             }
+
+            // Atualiza o status para 4
+            $user->status = 4;
+            $user->save();
+
+            // Executa o soft delete
             $user->delete();
+
             return [
                 'user'    => $user,
                 'message' => 'Usuário deletado com sucesso.'
             ];
         });
+    }
+
+    /**
+     * Retorna os usuários pelo STATUS
+     * 0 - PENDENTE APROVAÇÃO
+     * 1 - APROVADO COM VINCULO
+     * 2 - APROVADO SEM VINCULO
+     * 3 - REPROVADO
+     * 4 - INACTIVE -> DELETADO
+     * @param int $status
+     */
+
+    public function getUsers(int $status)
+    { 
+        return User::whereNull('deleted_at')->where('status', $status)->get();
     }
 }

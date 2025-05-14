@@ -6,33 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
+    public function up(): void
     {
         Schema::create('companies', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
+            $table->increments('id');
+            $table->string('name', 255);
             $table->string('cnpj', 16)->unique();
             $table->string('phone_number', 15);
-            $table->string('email')->unique();
+            $table->string('email', 255)->unique();
             $table->string('uf', 2);
             $table->string('endereco_detail', 255);
-            $table->tinyInteger('status')->default(1)->comment('1 = ativo | 0 = inativo');
+            $table->smallInteger('status')->default(1)->comment('1 = ativo | 0 = inativo');
             $table->timestamps();
             $table->softDeletes();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('companies');
     }
