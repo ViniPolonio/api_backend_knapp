@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login']);
+Route::post('user-create', [\App\Http\Controllers\UserController::class, 'store']);
+
+
 Route::prefix('knapp')->middleware('auth:sanctum')->group(function () {
 
     Route::prefix('v1')->group(function () {
