@@ -14,9 +14,15 @@ class CompanyService
      * @return \Illuminate\Support\Collection
      */
     public function getAllCompanies()
-    {
-        return Company::whereNull('deleted_at')->get();
+    {   
+        return Company::whereNull('deleted_at')
+            ->select('id', 'name', 'endereco_detail')
+            ->with(['branches' => function ($query) {
+                $query->select('id', 'company_id', 'name', 'endereco_detail', 'departaments_json');
+            }])
+            ->get();
     }
+
     
     /**
      * Retorna os detalhes de uma company pelo ID,

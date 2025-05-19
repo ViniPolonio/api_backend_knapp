@@ -46,10 +46,14 @@ class BranchService
     {
         return DB::transaction(function () use ($data) {
             return Branch::create([
-                'name'       => $data['name'],
-                'address'    => $data['address'],
                 'company_id' => $data['company_id'],
-                // adicione outros campos conforme necessário
+                'name'       => $data['name'],
+                'cnpj'       => $data['cnpj'],
+                'phone_number' => $data['phone_number'],
+                'email'      => $data['email'],
+                'uf'         => $data['uf'],
+                'endereco_detail' => $data['endereco_detail'],
+                'status'     => $data['status'],
             ]);
         });
     }
@@ -65,15 +69,35 @@ class BranchService
     {
         return DB::transaction(function () use ($id, $data) {
             $branch = Branch::findOrFail($id);
+
+            $data = array_merge([
+                'departaments_json' => $branch->departaments_json,
+                'company_id'     => $branch->company_id,
+                'name'           => $branch->name,
+                'cnpj'           => $branch->cnpj,
+                'phone_number'   => $branch->phone_number,
+                'email'          => $branch->email,
+                'uf'             => $branch->uf,
+                'endereco_detail'=> $branch->endereco_detail,
+                'status'         => $branch->status,
+            ], $data);
+
             $branch->update([
-                'name'       => $data['name'],
-                'address'    => $data['address'],
-                'company_id' => $data['company_id'],
-                // adicione outros campos conforme necessário
+                'departaments_json' => $data['departaments_json'],
+                'company_id'     => $data['company_id'],
+                'name'           => $data['name'],
+                'cnpj'           => $data['cnpj'],
+                'phone_number'   => $data['phone_number'],
+                'email'          => $data['email'],
+                'uf'             => $data['uf'],
+                'endereco_detail'=> $data['endereco_detail'],
+                'status'         => $data['status'],
             ]);
+
             return $branch;
         });
     }
+
 
     /**
      * Deleta (soft delete) a branch.

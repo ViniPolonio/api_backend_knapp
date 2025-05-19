@@ -19,6 +19,7 @@ class Branch extends Model
         'uf',
         'endereco_detail',
         'status',
+        'departaments_json',
     ];
 
     public function company()
