@@ -15,12 +15,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login']);
 Route::post('user-create', [\App\Http\Controllers\UserController::class, 'store']);
-
+Route::get('knapp/view-company', [\App\Http\Controllers\CompanyController::class, 'index']);
+Route::get('knapp/view-departament', [\App\Http\Controllers\DepartamentController::class, 'index']);
 
 Route::prefix('knapp')->middleware('auth:sanctum')->group(function () {
 
     Route::prefix('v1')->group(function () {
         // RESOURCE
+        Route::apiResource('departament', \App\Http\Controllers\DepartamentController::class);
         Route::apiResource('user', \App\Http\Controllers\UserController::class);
         Route::apiResource('branch', \App\Http\Controllers\BranchController::class);
         Route::apiResource('company', \App\Http\Controllers\CompanyController::class);
