@@ -14,6 +14,9 @@ class BranchCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'departaments_json' => 'nullable|array',
+            'departaments_json.*.departament_id' => 'required|integer',
+            'departaments_json.*.status' => 'required|in:0,1',
             'company_id'        => 'required|exists:companies,id',
             'name'              => 'required|string|max:255',
             'cnpj'              => 'required|string|size:14|unique:branches,cnpj',
