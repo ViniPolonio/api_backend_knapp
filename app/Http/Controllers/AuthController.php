@@ -31,7 +31,7 @@ class AuthController extends Controller
             'message' => 'Login realizado com sucesso',
             'access_token' => $token,
             'token_type' => 'Bearer',
-            'user' => $user,  // aqui já tem company e branch embutidos
+            'user' => $user,
         ]);
     }
 
