@@ -11,12 +11,14 @@ return new class extends Migration
         Schema::create('branches', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('company_id');
+            $table->json('departaments_json');
             $table->string('name', 255);
             $table->string('cnpj', 14)->unique();
             $table->string('phone_number', 15);
             $table->string('email', 255)->unique();
             $table->string('uf', 2);
             $table->string('endereco_detail', 255);
+            $table->string('cep', 10);
             $table->smallInteger('status')->default(1)->comment('1 = ativo, 0 = inativo');
             $table->timestamps();
             $table->softDeletes();
