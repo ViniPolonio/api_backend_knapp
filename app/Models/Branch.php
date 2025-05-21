@@ -20,6 +20,7 @@ class Branch extends Model
         'endereco_detail',
         'status',
         'departaments_json',
+        'cep',
     ];
 
     public function company()
