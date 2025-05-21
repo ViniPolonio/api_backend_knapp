@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Branch;
+use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -11,21 +13,18 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        // Validação dos campos
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required|string',
         ]);
 
-        // Buscar o usuário
-        $user = User::where('email', $credentials['email'])->first();
+        // Carrega usuário junto com company e branch
+        $user = User::with(['company', 'branch'])->where('email', $credentials['email'])->first();
 
-        // Verificar se usuário existe e senha está correta
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
             return response()->json(['message' => 'Credenciais inválidas'], 401);
         }
 
-        // Criar token de acesso
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
@@ -35,4 +34,5 @@ class AuthController extends Controller
             'user' => $user,
         ]);
     }
+
 }

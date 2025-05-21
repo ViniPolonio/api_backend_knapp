@@ -34,10 +34,18 @@ class CompanyService
      */
     public function getCompanyDetail(int $id): Company
     {
-        $company = Company::find($id);
+        $company = Company::where('id', $id)
+            ->whereNull('deleted_at')
+            ->select('id', 'name', 'endereco_detail')
+            ->with(['branches' => function ($query) {
+                $query->select('id', 'company_id', 'name', 'endereco_detail', 'cnpj', 'phone_number' ,'email', 'cep', 'departaments_json');
+            }])
+            ->first();
+
         if (!$company) {
-            throw new Exception('Company não encontrada.', 404);
+            throw new \Exception('Company não encontrada.', 404);
         }
+
         return $company;
     }
     

@@ -54,6 +54,8 @@ class BranchService
                 'uf'         => $data['uf'],
                 'endereco_detail' => $data['endereco_detail'],
                 'status'     => $data['status'],
+                'departaments_json' => json_encode($data['departaments_json']),
+                'cep' => $data['cep'],
             ]);
         });
     }
@@ -80,9 +82,11 @@ class BranchService
                 'uf'             => $branch->uf,
                 'endereco_detail'=> $branch->endereco_detail,
                 'status'         => $branch->status,
+                'cep'            => $branch->cep,
             ], $data);
 
             $branch->update([
+                'cep'             => $data['cep'],
                 'departaments_json' => $data['departaments_json'],
                 'company_id'     => $data['company_id'],
                 'name'           => $data['name'],

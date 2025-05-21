@@ -25,6 +25,7 @@ class BranchCreateRequest extends FormRequest
             'uf'                => 'required|string|size:2',
             'endereco_detail'   => 'required|string|max:255',
             'status'            => 'nullable|in:0,1',
+            'cep'               => 'required'
         ];
     }
 

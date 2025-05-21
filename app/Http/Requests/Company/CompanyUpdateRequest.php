@@ -22,13 +22,11 @@ class CompanyUpdateRequest extends FormRequest
                 'required',
                 'string',
                 'size:14',
-                Rule::unique('companies', 'cnpj')->ignore($companyId),
             ],
             'phone_number'     => 'required|string|max:15',
             'email'            => [
                 'required',
                 'email',
-                Rule::unique('companies', 'email')->ignore($companyId),
             ],
             'uf'               => 'required|string|size:2',
             'endereco_detail'  => 'required|string|max:255',

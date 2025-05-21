@@ -26,17 +26,16 @@ class BranchUpdateRequest extends FormRequest
                 // 'required',
                 'string',
                 'size:14',
-                Rule::unique('branches', 'cnpj')->ignore($branchId),
             ],
             'phone_number'      => 'string|max:15',
             'email'             => [
                 // 'required',
                 'email',
-                Rule::unique('branches', 'email')->ignore($branchId),
             ],
             'uf'                => 'string|size:2',
             'endereco_detail'   => 'string|max:255',
             'status'            => 'nullable|in:0,1',
+            'cep' => 'string|max:15',
         ];
     }
 
