@@ -30,7 +30,7 @@ Route::prefix('knapp')->middleware('auth:sanctum')->group(function () {
         // GET
         Route::get('user/{idUser}/activate', [\App\Http\Controllers\UserController::class, 'activeUser']);
         Route::get('user/{idUser}/deactivate', [\App\Http\Controllers\UserController::class, 'inactiveUser']);
-        Route::get('user/getUsers/{status}', [\App\Http\Controllers\UserController::class, 'getUsers']);
+        Route::get('user/getUsers/{status}/{branchId}', [\App\Http\Controllers\UserController::class, 'getUsers']);
         Route::get('user/getUserByBranch/{branchId}', [\App\Http\Controllers\UserController::class, 'getUsersByBranch']);
 
         //POST

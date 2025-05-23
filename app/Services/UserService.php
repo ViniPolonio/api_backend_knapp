@@ -180,9 +180,14 @@ class UserService
      * @param int $status
      */
 
-    public function getUsers(int $status)
+    public function getUsers(int $status, $branchId)
     { 
-        return User::whereNull('deleted_at')->where('status', $status)->get();
+        return User::with('departament')
+            ->whereNull('deleted_at')
+            ->where('branch_id', '=', $branchId)
+            ->where('status', $status)
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 
     public function getAllUsersByBranchId(int $branchId)

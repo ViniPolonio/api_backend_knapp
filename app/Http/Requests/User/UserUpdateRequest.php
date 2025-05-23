@@ -17,6 +17,7 @@ class UserUpdateRequest extends FormRequest
         $userId = $this->route('user'); // Certifique-se que a rota tem o parâmetro {user}
 
         return [
+            'message_validate' => 'string',
             'name' => [
                 // 'required', 
                 'string', 

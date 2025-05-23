@@ -89,11 +89,11 @@ class UserController extends Controller
         }
     }
 
-    public function getUsers(int $status) 
+    public function getUsers(int $status, int $branchId) 
     {
         try {
             // 0 - PENDENTE APROVAÇÃO | 1 - APROVADO COM VINCULO | 2 - APROVADO SEM VINCULO | 3 - REPROVADO | 4 - INACTIVE = DELETED_AT
-            $consultUsers = $this->userService->getUsers($status );
+            $consultUsers = $this->userService->getUsers($status, $branchId);
             if ($consultUsers->isEmpty()) {
                 return ResponseHelper::error('Nenhum registro encontrado.', null, 404);
             }

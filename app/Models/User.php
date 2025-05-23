@@ -25,6 +25,7 @@ class User extends Authenticatable
         'status',
         'password',
         'departament_id',
+        'message_validate',
     ];
 
     protected $hidden = [
