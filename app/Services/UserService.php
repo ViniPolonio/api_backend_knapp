@@ -48,6 +48,7 @@ class UserService
     {
         return DB::transaction(function () use ($data) {
             return User::create([
+                'departament_id'    => $data['departament_id'],
                 'name'              => $data['name'],
                 'cpf'               => $data['cpf'],
                 'phone_number'      => $data['phone_number'],
@@ -75,22 +76,12 @@ class UserService
     {
         return DB::transaction(function () use ($id, $data) {
             $user = User::findOrFail($id);
-            $user->update([
-                'name'              => $data['name'],
-                'cpf'               => $data['cpf'],
-                'phone_number'      => $data['phone_number'],
-                'is_admin'          => $data['is_admin'] ?? false,
-                'company_id'        => $data['company_id'],
-                'branch_id'         => $data['branch_id'],
-                'uf'                => $data['uf'],
-                'endereco_detail'   => $data['endereco_detail'],
-                'email'             => $data['email'],
-                'status'            => $data['status'] ?? 0,
-                'email_verified_at' => $data['email_verified_at'] ?? null,
-            ]);
+            $user->fill($data);
+            $user->save();
             return $user;
         });
     }
+
 
     /**
      * Ativa o usuário (altera o status para 1) se estiver inativo.
@@ -189,8 +180,23 @@ class UserService
      * @param int $status
      */
 
-    public function getUsers(int $status)
+    public function getUsers(int $status, $branchId)
     { 
-        return User::whereNull('deleted_at')->where('status', $status)->get();
+        return User::with('departament')
+            ->whereNull('deleted_at')
+            ->where('branch_id', '=', $branchId)
+            ->where('status', $status)
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+
+    public function getAllUsersByBranchId(int $branchId)
+    {
+        return User::with('departament')
+            ->where('branch_id', $branchId)
+            ->whereNull('deleted_at')
+            ->where('status', 1)
+            ->select('id', 'name', 'cpf', 'phone_number', 'is_admin', 'uf', 'endereco_detail', 'email', 'status', 'created_at','departament_id')
+            ->get();
     }
 }

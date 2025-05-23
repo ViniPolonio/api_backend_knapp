@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\ResponseHelper;
 use App\Http\Requests\Branch\BranchCreateRequest;
 use App\Http\Requests\Branch\BranchUpdateRequest;
+use App\Models\Branch;
 use App\Services\BranchService;
 
 class BranchController extends Controller

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
 use App\Http\Requests\User\UserCreateRequest;
-use App\Http\Requests\UserUpdateRequest;
+use App\Http\Requests\User\UserUpdateRequest;
 use App\Services\UserService;
 
 class UserController extends Controller
@@ -89,17 +89,31 @@ class UserController extends Controller
         }
     }
 
-    public function getUsers(int $status) 
+    public function getUsers(int $status, int $branchId) 
     {
         try {
             // 0 - PENDENTE APROVAÇÃO | 1 - APROVADO COM VINCULO | 2 - APROVADO SEM VINCULO | 3 - REPROVADO | 4 - INACTIVE = DELETED_AT
-            $consultUsers = $this->userService->getUsers($status );
+            $consultUsers = $this->userService->getUsers($status, $branchId);
             if ($consultUsers->isEmpty()) {
                 return ResponseHelper::error('Nenhum registro encontrado.', null, 404);
             }
             return ResponseHelper::success($consultUsers, 'Novos usuários recuperados com sucesso.');
         } catch (\Exception $e) {
             return ResponseHelper::error('Error ao consultar todos os novos usuários.', $e->getMessage());
+        }
+    }
+
+    public function getUsersByBranch(int $branchId) 
+    {
+        try {
+            $consultAllUsers = $this->userService->getAllUsersByBranchId($branchId);
+            if ($consultAllUsers->isEmpty()) {
+                return response()->json(['staus'  => 1, 'message' => 'Não foram encontrados usuários vinculados a essa filial.', 'data' => '',]);
+            }
+            return ResponseHelper::success($consultAllUsers, 'Usuários da filial recuperados com sucesso.');
+        } catch (\Exception $e) {
+            return ResponseHelper::error('Error ao consultar todos os usuários dessa filial.', $e->getMessage());
+
         }
     }
 }
