@@ -10,6 +10,9 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id'); // Oracle-friendly auto-increment
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
+            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
+            $table->foreign('departament_id')->references('id')->on('departaments')->onDelete('cascade');
 
             $table->string('name');
             $table->string('cpf', 12)->unique(); 
@@ -18,9 +21,8 @@ return new class extends Migration
 
             $table->unsignedInteger('company_id');
             $table->unsignedInteger('branch_id');
+            $table->unsignedInteger('departament_id');
 
-            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
-            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade');
 
             $table->string('uf', 2);
             $table->string('endereco_detail', 255);

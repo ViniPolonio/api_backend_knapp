@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -17,30 +17,69 @@ class UserUpdateRequest extends FormRequest
         $userId = $this->route('user'); // Certifique-se que a rota tem o parâmetro {user}
 
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => [
+                // 'required', 
+                'string', 
+                'max:255'
+            ],
+
             'cpf' => [
-                'required',
+                // 'required',
                 'string',
                 'max:12',
                 Rule::unique('users', 'cpf')->ignore($userId),
             ],
-            'phone_number' => ['required', 'string', 'max:15'],
-            'is_admin' => ['boolean'],
 
-            'company_id' => ['required', 'exists:companies,id'],
-            'branch_id' => ['required', 'exists:branches,id'],
+            'phone_number' => [
+                // 'required', 
+                'string', 
+                'max:15'
 
-            'uf' => ['required', 'string', 'size:2'],
-            'endereco_detail' => ['required', 'string', 'max:255'],
+            ],
+            'is_admin' => [
+                'boolean'
+            ],
+
+            'company_id' => [
+                // 'required', 
+                'exists:companies,id'
+            ],
+            
+            'branch_id' => [
+                // 'required', 
+                'exists:branches,id'
+            ],
+
+            'uf' => [
+                // 'required', 
+                'string', 
+                'size:2'
+            ],
+            
+            'endereco_detail' => [
+                // 'required', 
+                'string', 
+                'max:255'
+            ],
+
             'email' => [
-                'required',
+                // 'required',
                 'string',
                 'email',
                 'max:255',
                 Rule::unique('users', 'email')->ignore($userId),
             ],
-            'status' => ['nullable', 'integer', 'between:0,127'],
-            'email_verified_at' => ['nullable', 'date'],
+            
+            'status' => [
+                'nullable', 
+                'integer', 
+                'between:0,127'
+            ],
+
+            'email_verified_at' => [
+                'nullable', 
+                'date'
+            ],
         ];
     }
 

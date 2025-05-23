@@ -19,7 +19,7 @@ class AuthController extends Controller
         ]);
 
         // Carrega usuário junto com company e branch
-        $user = User::with(['company', 'branch'])->where('email', $credentials['email'])->first();
+        $user = User::with(['company', 'branch', 'departament'])->where('email', $credentials['email'])->first();
 
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
             return response()->json(['message' => 'Credenciais inválidas'], 401);

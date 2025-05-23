@@ -14,6 +14,7 @@ class UserCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'departament_id' => ['required', 'integer'],
             'name' => ['required', 'string', 'max:255'],
             'cpf' => ['required', 'string', 'max:12', 'unique:users,cpf'],
             'phone_number' => ['required', 'string', 'max:15'],
@@ -30,9 +31,11 @@ class UserCreateRequest extends FormRequest
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ];
     }
+    
     public function messages(): array
     {
         return [
+            'departament_id' => 'O campo departamento é obrigatório',
             'name.required' => 'O nome é obrigatório.',
             'name.max' => 'O nome não pode exceder 255 caracteres.',
 

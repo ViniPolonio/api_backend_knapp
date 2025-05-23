@@ -24,6 +24,7 @@ class User extends Authenticatable
         'email',
         'status',
         'password',
+        'departament_id',
     ];
 
     protected $hidden = [
@@ -47,6 +48,12 @@ class User extends Authenticatable
     public function branch()
     {
         return $this->belongsTo(\App\Models\Branch::class);
+    }
+
+    //Relação com o Departamento
+    public function departament()
+    {
+        return $this->belongsTo(\App\Models\Departament::class, 'departament_id');
     }
 
 }
