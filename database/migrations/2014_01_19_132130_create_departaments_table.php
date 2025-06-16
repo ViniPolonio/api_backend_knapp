@@ -1,8 +1,8 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Database\Seeders\DepartamentSeeder;
 
 return new class extends Migration
 {
@@ -19,6 +19,15 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        // Chama o seeder após a criação da tabela
+        $this->callSeeder();
+    }
+
+    protected function callSeeder()
+    {
+        // Roda o seeder diretamente
+        app()->make(DepartamentSeeder::class)->run();
     }
 
     /**

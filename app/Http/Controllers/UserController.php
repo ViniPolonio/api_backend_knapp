@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Helpers\ResponseHelper;
 use App\Http\Requests\User\UserCreateRequest;
 use App\Http\Requests\User\UserUpdateRequest;
+use App\Models\User;
 use App\Services\UserService;
+use Request;
 
 class UserController extends Controller
 {
@@ -95,7 +97,7 @@ class UserController extends Controller
             // 0 - PENDENTE APROVAÇÃO | 1 - APROVADO COM VINCULO | 2 - APROVADO SEM VINCULO | 3 - REPROVADO | 4 - INACTIVE = DELETED_AT
             $consultUsers = $this->userService->getUsers($status, $branchId);
             if ($consultUsers->isEmpty()) {
-                return ResponseHelper::error('Nenhum registro encontrado.', null, 404);
+                return response()->json(['staus'  => 1, 'message' => 'Não há usuários aguardando aprovação nesta filial no momento.', 'data' => '',]);
             }
             return ResponseHelper::success($consultUsers, 'Novos usuários recuperados com sucesso.');
         } catch (\Exception $e) {
@@ -114,6 +116,76 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return ResponseHelper::error('Error ao consultar todos os usuários dessa filial.', $e->getMessage());
 
+        }
+    }
+    
+    public function estatistics(Request $request)
+    {
+        try {
+            // Total Geral
+            $usersPending = User::whereNull('deleted_at')
+                ->where('status', 0)
+                ->count();
+
+            $usersActive = User::whereNull('deleted_at')
+                ->where('status', 1)
+                ->count();
+
+            $total = $usersPending + $usersActive;
+
+            // Por Company (sem join, só ID)
+            $companies = \DB::table('users')
+                ->select('company_id', \DB::raw('COUNT(*) as total'),
+                    \DB::raw('SUM(CASE WHEN status = 0 THEN 1 ELSE 0 END) as users_pending'),
+                    \DB::raw('SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) as users_active'))
+                ->whereNull('deleted_at')
+                ->groupBy('company_id')
+                ->get();
+
+            $companiesData = [];
+            foreach ($companies as $company) {
+                $companiesData[] = [
+                    'company_id'    => $company->company_id,
+                    'users_pending' => $company->users_pending,
+                    'users_active'  => $company->users_active,
+                    'total'         => $company->total,
+                ];
+            }
+
+            // Por Branch (com join para pegar o título)
+            $branches = \DB::table('users as u')
+                ->join('branches as b', 'u.branch_id', '=', 'b.id')
+                ->select('u.branch_id', 'b.name as branch_name',
+                    \DB::raw('COUNT(*) as total'),
+                    \DB::raw('SUM(CASE WHEN u.status = 0 THEN 1 ELSE 0 END) as users_pending'),
+                    \DB::raw('SUM(CASE WHEN u.status = 1 THEN 1 ELSE 0 END) as users_active'))
+                ->whereNull('u.deleted_at')
+                ->groupBy('u.branch_id', 'b.name')
+                ->get();
+
+            $branchesData = [];
+            foreach ($branches as $branch) {
+                $branchesData[] = [
+                    'branch_id'     => $branch->branch_id,
+                    'branch_name'   => $branch->branch_name,
+                    'users_pending' => $branch->users_pending,
+                    'users_active'  => $branch->users_active,
+                    'total'         => $branch->total,
+                ];
+            }
+
+            return response()->json([
+                'total' => [
+                    'users_pending' => $usersPending,
+                    'users_active'  => $usersActive,
+                    'total'         => $total,
+                ],
+                'companies' => $companiesData,
+                'branches'  => $branchesData
+            ]);
+
+        } catch (\Exception $e) {
+            return ResponseHelper::error('Erro ao consultar estatísticas dos usuários.', $e->getMessage());
         }
     }
 }
