@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -23,9 +24,41 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
         });
+
+        $departaments = [
+            [
+                'title' => 'Recursos Humanos',
+                'description' => 'Gestão de pessoas, recrutamento, treinamento e benefícios.',
+                'status' => 1,
+            ],
+            [
+                'title' => 'Financeiro',
+                'description' => 'Gerenciamento financeiro, pagamentos, orçamentos e controle de custos.',
+                'status' => 1,
+            ],
+            [
+                'title' => 'Tecnologia da Informação (TI)',
+                'description' => 'Suporte técnico, desenvolvimento de sistemas, infraestrutura e segurança da informação.',
+                'status' => 1,
+            ],
+        ];
+
+        DB::table('branches')->insert([
+            'company_id' => 1,
+            'departaments_json' => json_encode($departaments, JSON_UNESCAPED_UNICODE),
+            'name' => 'Filial Central',
+            'cnpj' => '98765432000188',
+            'phone_number' => '1144445555',
+            'email' => 'filial@example.com',
+            'uf' => 'SP',
+            'endereco_detail' => 'Av. Central, 456',
+            'cep' => '01234-890',
+            'status' => 1,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 
     public function down(): void

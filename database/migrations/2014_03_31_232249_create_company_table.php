@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -21,6 +22,20 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        // Inserção de empresa padrão
+        DB::table('companies')->insert([
+            'name' => 'Knapp - central',
+            'cnpj' => '12345678000199',
+            'phone_number' => '1133334444',
+            'email' => 'knapp@knapp.com',
+            'uf' => 'PR',
+            'endereco_detail' => 'Rua Afonso Pena',
+            'cep' => '01234-567',
+            'status' => 1,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 
     public function down(): void
